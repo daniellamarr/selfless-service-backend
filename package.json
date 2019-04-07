@@ -7,7 +7,7 @@
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec babel-node ./src/index.js",
     "build": "babel -d build/ src",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test npm run db:unmigrate && NODE_ENV=test npm run db:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test nyc mocha --exit --timeout 100000 --require @babel/register ./test/*",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "db:migrate": "sequelize db:migrate",
@@ -38,9 +38,12 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0",
+    "mocha": "^6.0.2",
     "nodemon": "^1.18.10"
   }
 }
