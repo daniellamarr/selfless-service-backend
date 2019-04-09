@@ -2,13 +2,19 @@ language: node_js
 node_js:
  - "stable"
 install: npm install
-services:
-- postgresql
 env:
-- DB_USERNAME=selfless_user DB_PASSWORD=null DBNAME=selfless_service_test
+  - global:
+      - CC_TEST_REPORTER_ID=d521c5f8b9546033277ca72b96c899af90549842b39d2ad01867424df8eabaf9
+services:
+  - postgresql
+env:
+  - DB_USERNAME=selfless_user DB_PASSWORD=null DBNAME=selfless_service_test
 before_script:
-- psql -c 'drop database if exists selfless_service_test;' -U postgres
-- psql -c 'create database selfless_service_test;' -U postgres
-- psql -c "CREATE USER selfless_user WITH PASSWORD 'null';" -U postgres
+  - psql -c 'drop database if exists selfless_service_test;' -U postgres
+  - psql -c 'create database selfless_service_test;' -U postgres
+  - psql -c "CREATE USER selfless_user WITH PASSWORD 'null';" -U postgres
 
 script: npm test
+
+after_script:
+  - npm run coverage
