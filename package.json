@@ -7,13 +7,19 @@
     "start": "node ./build/index.js",
     "start:dev": "nodemon --exec babel-node ./src/index.js",
     "build": "babel -d build/ src",
-    "test": "NODE_ENV=test nyc mocha --exit --timeout 100000 --require @babel/register ./tests/*",
+    "test": "NODE_ENV=test npm run db:unmigrate && NODE_ENV=test npm run db:migrate && NODE_ENV=test npm run db:seed && NODE_ENV=test nyc mocha --exit --timeout 100000 --require @babel/register ./tests/*",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "db:migrate": "sequelize db:migrate",
     "db:unmigrate": "sequelize db:migrate:undo:all",
     "db:seed": "sequelize db:seed:all"
+  },
+  "nyc": {
+    "exclude": [
+      "tests",
+      "src/db/models/index.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -27,6 +33,7 @@
   },
   "homepage": "https://github.com/daniellamarr/selfless-service-backend#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "pg": "^7.9.0",
@@ -39,6 +46,7 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
+    "babel-polyfill": "^6.26.0",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "coveralls": "^3.0.3",
