@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import models from '../db/models';
 import Response from '../helpers/Response';
+import Token from '../helpers/Token';
 
 const { User } = models;
 
@@ -71,6 +72,77 @@ class UsersController {
         201,
         'Signup successful',
         data
+      );
+      return res.status(response.code).json(response);
+    } catch (err) {
+      const response = new Response(
+        'Internal server error',
+        500,
+        'There was an error while processing your request'
+      );
+      return res.status(response.code).json(response);
+    }
+  }
+
+  /**
+   * logs in a user
+   * @param {object} req request object for login function
+   * @param {object} res response object for login function
+   * @returns {object} user logged in
+   */
+  static async login(req, res) {
+    try {
+      const { email, password } = req.body;
+
+      const login = await User.findOne({
+        where: {
+          email
+        },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        }
+      });
+
+      if (!login) {
+        const response = new Response(
+          'Bad Request',
+          400,
+          'Your credentials are incorrect'
+        );
+        return res.status(response.code).json(response);
+      }
+
+      const passwordMatch = bcrypt.compareSync(password, login.password);
+      if (!passwordMatch) {
+        const response = new Response(
+          'Bad Request',
+          400,
+          'Your credentials are incorrect'
+        );
+        return res.status(response.code).json(response);
+      }
+
+      const user = {
+        firstname: login.firstname,
+        surname: login.surname,
+        username: login.username,
+        email: login.email,
+        phoneNumber: login.phoneNumber,
+        role: login.role,
+        status: login.status,
+        verified: login.verified
+      };
+
+      const token = Token.generateToken(user, '365 days');
+
+      const response = new Response(
+        'Ok',
+        200,
+        'Login successful',
+        {
+          user,
+          token
+        }
       );
       return res.status(response.code).json(response);
     } catch (err) {

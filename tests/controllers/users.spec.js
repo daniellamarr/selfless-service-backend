@@ -8,7 +8,11 @@ import {
   mockUserWithExistingEmail,
   mockUserWithInvalidEmail,
   mockUserWithoutUsername,
-  mockUserWithoutPassword
+  mockUserWithoutPassword,
+  mockUserLogin,
+  mockUserLoginMissingEmail,
+  mockUserLoginMissingPassword,
+  mockUserLoginInvalidCredentials
 } from '../mocks/users.mock';
 
 chai.use(chaiHttp);
@@ -89,6 +93,62 @@ describe('Users Endpoint Test', () => {
           expect(res.status).to.equal(400);
           expect(res.body.message).to.equal(
             'The email is invalid'
+          );
+          done(err);
+        });
+    });
+
+    it('should login a valid user', (done) => {
+      chai.request(server)
+        .post(`${testPath}login`)
+        .send(mockUserLogin)
+        .end((err, res) => {
+          expect(res.body).to.be.a('object');
+          expect(res.status).to.equal(200);
+          expect(res.body.message).to.equal(
+            'Login successful'
+          );
+          done(err);
+        });
+    });
+
+    it('should return error if email is missing', (done) => {
+      chai.request(server)
+        .post(`${testPath}login`)
+        .send(mockUserLoginMissingEmail)
+        .end((err, res) => {
+          expect(res.body).to.be.a('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal(
+            'Email field cannot be empty'
+          );
+          done(err);
+        });
+    });
+
+    it('should return error if password is missing', (done) => {
+      chai.request(server)
+        .post(`${testPath}login`)
+        .send(mockUserLoginMissingPassword)
+        .end((err, res) => {
+          expect(res.body).to.be.a('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal(
+            'Password field cannot be empty'
+          );
+          done(err);
+        });
+    });
+
+    it('should return error if credntial is wrong', (done) => {
+      chai.request(server)
+        .post(`${testPath}login`)
+        .send(mockUserLoginInvalidCredentials)
+        .end((err, res) => {
+          expect(res.body).to.be.a('object');
+          expect(res.status).to.equal(400);
+          expect(res.body.message).to.equal(
+            'Your credentials are incorrect'
           );
           done(err);
         });

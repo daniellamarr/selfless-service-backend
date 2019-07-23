@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import Response from './Response';
+
+dotenv.config();
 
 /**
  * Token Helper Class - Generates and verifies tokens

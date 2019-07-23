@@ -72,6 +72,34 @@ class UsersMiddleware {
 
     next();
   }
+
+  /**
+   * Validate Signup
+   * @param {object} req Request Object
+   * @param {object} res Response Object
+   * @param {function} next
+   * @returns {object} error object if fields are empty
+   */
+  static async validateLogin(req, res, next) {
+    const { email, password } = req.body;
+
+    const fields = [
+      { name: 'Email', value: email },
+      { name: 'Password', value: password }
+    ];
+
+    const validation = Validation.checkEmptyFields(fields);
+    if (validation.status === false) {
+      const response = new Response(
+        'Bad Request',
+        400,
+        `${validation.errors.field} field cannot be empty`,
+      );
+      return res.status(response.code).json(response);
+    }
+
+    next();
+  }
 }
 
 export default UsersMiddleware;
