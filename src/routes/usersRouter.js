@@ -10,4 +10,10 @@ usersRouter.post(
   UsersController.signup
 );
 
+usersRouter.post(
+  '/login',
+  UsersMiddleware.validateLogin,
+  UsersController.login
+);
+
 export default usersRouter;

@@ -73,11 +73,35 @@ const mockUserWithInvalidEmail = {
   role: 2,
 };
 
+const mockUserLogin = {
+  email: 'testuser@mail.com',
+  password: 'qwerty'
+};
+
+const mockUserLoginMissingEmail = {
+  email: '',
+  password: 'qwerty',
+};
+
+const mockUserLoginMissingPassword = {
+  email: 'testuser@mail.com',
+  password: '',
+};
+
+const mockUserLoginInvalidCredentials = {
+  email: 'testuser@mailll.com',
+  password: 'qwerty',
+};
+
 export {
   mockValidUserSignup,
   mockUserWithoutFirstname,
   mockUserWithExistingEmail,
   mockUserWithInvalidEmail,
   mockUserWithoutUsername,
-  mockUserWithoutPassword
+  mockUserWithoutPassword,
+  mockUserLogin,
+  mockUserLoginMissingEmail,
+  mockUserLoginMissingPassword,
+  mockUserLoginInvalidCredentials
 };
