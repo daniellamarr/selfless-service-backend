@@ -16,7 +16,11 @@ module.exports = {
       type: Sequelize.STRING
     },
     rsvp: {
+<<<<<<< HEAD
       type: Sequelize.BOOLEAN
+=======
+      type: Sequelize.BOOL
+>>>>>>> e7063c7e23de85a89e8040336b7a36ec0be29944
     },
     createdAt: {
       allowNull: false,
