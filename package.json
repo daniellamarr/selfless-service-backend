@@ -34,9 +34,9 @@
   "homepage": "https://github.com/daniellamarr/selfless-service-backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.18.3",
+    "body-parser": "^1.20.1",
     "dotenv": "^7.0.0",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.9.0",
     "sequelize": "^5.2.12",
